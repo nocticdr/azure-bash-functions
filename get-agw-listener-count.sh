@@ -28,6 +28,10 @@ NC='\033[0m' # No Color
 
 #This function will retrieve the state of an application gateway
 #The state of the AGW isn't available from the portal
+
+# Call this function as follows:
+# agwstate <resource-group> <agw-name>
+
 agwstate() 
 {
   rg=$1

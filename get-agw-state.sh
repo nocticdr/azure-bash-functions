@@ -25,6 +25,8 @@ CYAN='\033[1;36m'
 NC='\033[0m' # No Color
 
 
+# Call this function as follows:
+# agwcount <resource-group> <agw-name>
 
 agwcount() 
 {

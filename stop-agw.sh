@@ -24,23 +24,25 @@ BLUE='\033[1;34m'
 CYAN='\033[1;36m'
 NC='\033[0m' # No Color
 
-# Call this function as follows:
-# startagw <resource-group> <agw-name>
 
-startagw() 
+# Call this function as follows:
+# stopagw <resource-group> <agw-name>
+
+stopagw() 
 {
- rg=$1
- name=$2
- state=`az network application-gateway show -n $name -g $rg --query operationalState -o tsv`
- #errPrint "${BLUE}AGW\n${NC}$AZ_COMMAND\n is $state"
- if [ $state = "Stopped" ]; then
-  echo "ApplicationGateway ${CYAN}$name ${NC}is currently ${RED}$state"
-  start=`az network application-gateway start -g $rg -n "$name"`
+  rg=$1
+  name=$2
   state=`az network application-gateway show -n $name -g $rg --query operationalState -o tsv`
-  echo "${NC}ApplicationGateway ${CYAN}$name ${NC}is now ${RED}$state"
- fi
- if [ $state = "Running" ] ; then
-  echo "${NC}ApplicationGateway ${CYAN}$name ${NC}is already ${GREEN}$state"
- fi 
- #errPrint "${BLUE}AGW\n${NC}$AZ_COMMAND\n is $state"
+  #errPrint "${BLUE}AGW\n${NC}$AZ_COMMAND\n is $state"
+  if [ $state = "Stopped" ]; then
+   echo "ApplicationGateway ${CYAN}$name ${NC}is already ${RED}$state"
+  fi
+
+  if [ $state = "Running" ] ; then
+   echo "${NC}ApplicationGateway ${CYAN}$name ${NC}is currently ${GREEN}$state"
+   stop=`az network application-gateway stop -g $rg -n "$name"`
+   state=`az network application-gateway show -n $name -g $rg --query operationalState -o tsv`
+   echo "${NC}ApplicationGateway ${CYAN}$name ${NC}is now ${RED}$state"
+  fi  
+  #errPrint "${BLUE}AGW\n${NC}$AZ_COMMAND\n is $state"
 }
