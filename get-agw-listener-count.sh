@@ -24,3 +24,21 @@ BLUE='\033[1;34m'
 CYAN='\033[1;36m'
 NC='\033[0m' # No Color
 
+
+
+#This function will retrieve the state of an application gateway
+#The state of the AGW isn't available from the portal
+agwstate() 
+{
+  rg=$1
+  name=$2
+  state=`az network application-gateway show -n $name -g $rg --query operationalState -o tsv`
+  #errPrint "${BLUE}AGW\n${NC}$AZ_COMMAND\n is $state"
+  if [ $state = "Stopped" ]; then
+  echo "ApplicationGateway ${CYAN}$name ${NC}is ${RED}$state"
+ fi
+
+ if [ $state = "Running" ] ; then
+  echo "ApplicationGateway ${CYAN}$name ${NC}is ${GREEN}$state"
+ fi
+}
