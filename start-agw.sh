@@ -24,3 +24,23 @@ BLUE='\033[1;34m'
 CYAN='\033[1;36m'
 NC='\033[0m' # No Color
 
+# Call this function as follows:
+# startagw <resource-group> <agw-name>
+
+startagw() 
+{
+ rg=$1
+ name=$2
+ state=`az network application-gateway show -n $name -g $rg --query operationalState -o tsv`
+ #errPrint "${BLUE}AGW\n${NC}$AZ_COMMAND\n is $state"
+ if [ $state = "Stopped" ]; then
+  echo "ApplicationGateway ${CYAN}$name ${NC}is currently ${RED}$state"
+  start=`az network application-gateway start -g $rg -n "$name"`
+  state=`az network application-gateway show -n $name -g $rg --query operationalState -o tsv`
+  echo "${NC}ApplicationGateway ${CYAN}$name ${NC}is now ${RED}$state"
+ fi
+ if [ $state = "Running" ] ; then
+  echo "${NC}ApplicationGateway ${CYAN}$name ${NC}is already ${GREEN}$state"
+ fi 
+ #errPrint "${BLUE}AGW\n${NC}$AZ_COMMAND\n is $state"
+}
