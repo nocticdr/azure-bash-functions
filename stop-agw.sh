@@ -33,16 +33,13 @@ stopagw()
   rg=$1
   name=$2
   state=`az network application-gateway show -n $name -g $rg --query operationalState -o tsv`
-  #errPrint "${BLUE}AGW\n${NC}$AZ_COMMAND\n is $state"
-  if [ $state = "Stopped" ]; then
-   echo "ApplicationGateway ${CYAN}$name ${NC}is already ${RED}$state"
-  fi
-
-  if [ $state = "Running" ] ; then
+  if [ $state = "Running" ]; 
+  then
    echo "${NC}ApplicationGateway ${CYAN}$name ${NC}is currently ${GREEN}$state"
    stop=`az network application-gateway stop -g $rg -n "$name"`
    state=`az network application-gateway show -n $name -g $rg --query operationalState -o tsv`
    echo "${NC}ApplicationGateway ${CYAN}$name ${NC}is now ${RED}$state"
+  else
+   echo "ApplicationGateway ${CYAN}$name ${NC}is already ${RED}$state"
   fi  
-  #errPrint "${BLUE}AGW\n${NC}$AZ_COMMAND\n is $state"
 }
